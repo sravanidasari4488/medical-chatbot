@@ -5,40 +5,34 @@ import streamlit as st
 from typing import Dict, Any
 from google import genai
 from google.genai import types
+
 class MedicalChatbot:
     def __init__(self):
         """Initialize the Medical Chatbot with Gemini API"""
-        # Debug: Show what secrets are available
-        st.write("Debug: Available secrets:", list(st.secrets.keys()) if hasattr(st, 'secrets') else "No secrets found")
-        
         # Try multiple ways to get the API key
         api_key = ""
         
-        # Method 1: Try Streamlit secrets
+        # Method 1: Try Streamlit secrets (check different formats)
         try:
-            if hasattr(st, 'secrets') and 'GEMINI_API_KEY' in st.secrets:
+            # Try direct access first
+            if 'GEMINI_API_KEY' in st.secrets:
                 api_key = st.secrets["GEMINI_API_KEY"]
-                st.write("Debug: Got API key from Streamlit secrets")
-            else:
-                st.write("Debug: GEMINI_API_KEY not found in Streamlit secrets")
+            # Try nested secrets format
+            elif 'secrets' in st.secrets and 'GEMINI_API_KEY' in st.secrets['secrets']:
+                api_key = st.secrets['secrets']['GEMINI_API_KEY']
         except Exception as e1:
-            st.write(f"Debug: Streamlit secrets error: {e1}")
+            pass
             
         # Method 2: Try environment variable
         if not api_key:
             try:
                 api_key = os.getenv("GEMINI_API_KEY", "")
-                if api_key:
-                    st.write("Debug: Got API key from environment variable")
-                else:
-                    st.write("Debug: No API key in environment variable")
             except Exception as e2:
-                st.write(f"Debug: Environment variable error: {e2}")
+                pass
         
         if not api_key:
             raise ValueError("GEMINI_API_KEY is required. Please check your Streamlit secrets configuration.")
         
-        # Continue with initialization...
         self.client = genai.Client(api_key=api_key)
         self.model_name = "gemini-2.5-flash"
         
@@ -157,4 +151,3 @@ class MedicalChatbot:
         """Get detailed information about a specific medical department"""
         dept_key = department.lower().replace(" ", "_")
         return self.medical_departments.get(dept_key, "Department information not available.")
-    
