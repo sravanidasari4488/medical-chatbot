@@ -9,7 +9,10 @@ from google.genai import types
 class MedicalChatbot:
     def __init__(self):
         """Initialize the Medical Chatbot with Gemini API"""
-        api_key = os.getenv("GEMINI_API_KEY", "")
+        try:
+            api_key = st.secrets["GEMINI_API_KEY"]
+        except:
+            api_key = os.getenv("GEMINI_API_KEY", "")
         if not api_key:
             raise ValueError("GEMINI_API_KEY environment variable is required")
         
