@@ -28,7 +28,13 @@ def main():
     # Initialize session state
     if "messages" not in st.session_state:
         st.session_state.messages = []
-        st.session_state.chatbot = initialize_chatbot()
+         # Initialize chatbot safely
+    if "chatbot" not in st.session_state:
+        try:
+            st.session_state.chatbot = initialize_chatbot()
+        except Exception as e:
+            st.error(f"Failed to initialize chatbot: {str(e)}")
+            st.stop()
     
     # Display chat history
     for message in st.session_state.messages:
@@ -37,6 +43,11 @@ def main():
     
     # Chat input
     if prompt := st.chat_input("Describe your symptoms or ask a medical question..."):
+         # Check if chatbot is initialized
+        if "chatbot" not in st.session_state:
+            st.error("Chatbot is not initialized. Please refresh the page.")
+            return
+        
         # Add user message to chat history
         st.session_state.messages.append({"role": "user", "content": prompt})
         
