@@ -4,10 +4,7 @@ import logging
 from typing import Dict, Any
 from google import genai
 from google.genai import types
-from dotenv import load_dotenv
 
-# Load environment variables from .env file
-load_dotenv()
 
 class MedicalChatbot:
     def __init__(self):
