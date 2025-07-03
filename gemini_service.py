@@ -20,7 +20,7 @@ class MedicalChatbot:
             except Exception as e2:
                 pass
         if not api_key:
-            raise ValueError("GEMINI_API_KEY environment variable is required")
+            raise ValueError("GEMINI_API_KEY is required. Please check your Streamlit secrets configuration.")
         
         self.client = genai.Client(api_key=api_key)
         self.model_name = "gemini-2.5-flash"
