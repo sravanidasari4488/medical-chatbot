@@ -1,6 +1,6 @@
 import streamlit as st
 import json
-from gemini_service import MedicalChatbot
+from watson_service import MedicalChatbot
 
 # Page configuration
 st.set_page_config(
