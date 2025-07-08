@@ -5,6 +5,8 @@ import streamlit as st
 from typing import Dict, Any
 from google import genai
 from google.genai import types
+from ibm_watson_machine_learning.foundation_models import Model
+from ibm_watson_machine_learning import APIClient
 
 class MedicalChatbot:
     def __init__(self):
