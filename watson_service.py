@@ -3,8 +3,6 @@ import json
 import logging
 import streamlit as st
 from typing import Dict, Any
-from google import genai
-from google.genai import types
 from ibm_watson_machine_learning.foundation_models import Model
 
 
@@ -35,8 +33,8 @@ class MedicalChatbot:
         if not api_key:
             raise ValueError("WATSONX_API_KEY is required. Please check your Streamlit secrets configuration.")
         
-        self.client = genai.Client(api_key=api_key)
-        self.model_name = "ibm/granite-13b-instruct-v2"
+        
+       model = Model(model_id="ibm/granite-13b-instruct-v2")
         
         # Medical departments mapping
         self.medical_departments = {
@@ -103,7 +101,7 @@ class MedicalChatbot:
             )
             
             if not response.text:
-                raise ValueError("Empty response from Gemini API")
+                raise ValueError("Empty response from Watsonx API")
             
             # Enhance the response with department information
             enhanced_response = self._enhance_response_with_department_info(response.text)
