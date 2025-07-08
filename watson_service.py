@@ -15,10 +15,10 @@ class MedicalChatbot:
         # Method 1: Try Streamlit secrets (check different formats)
         try:
             # Try direct access first
-            if 'GEMINI_API_KEY' in st.secrets:
+            if 'WATSONX_API_KEY' in st.secrets:
                 api_key = st.secrets["WATSONX_API_KEY"]
             # Try nested secrets format
-            elif 'secrets' in st.secrets and 'GEMINI_API_KEY' in st.secrets['secrets']:
+            elif 'secrets' in st.secrets and 'WATSONX_API_KEY' in st.secrets['secrets']:
                 api_key = st.secrets['secrets']['WATSONX_API_KEY']
         except Exception as e1:
             pass
@@ -34,7 +34,7 @@ class MedicalChatbot:
             raise ValueError("WATSONX_API_KEY is required. Please check your Streamlit secrets configuration.")
         
         self.client = genai.Client(api_key=api_key)
-        self.model_name = "gemini-2.5-flash"
+        self.model_name = "ibm/granite-13b-instruct-v2"
         
         # Medical departments mapping
         self.medical_departments = {
