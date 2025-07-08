@@ -8,7 +8,7 @@ from google.genai import types
 
 class MedicalChatbot:
     def __init__(self):
-        """Initialize the Medical Chatbot with Gemini API"""
+        """Initialize the Medical Chatbot with Watsonx API"""
         # Try multiple ways to get the API key
         api_key = ""
         
@@ -16,22 +16,22 @@ class MedicalChatbot:
         try:
             # Try direct access first
             if 'GEMINI_API_KEY' in st.secrets:
-                api_key = st.secrets["GEMINI_API_KEY"]
+                api_key = st.secrets["WATSONX_API_KEY"]
             # Try nested secrets format
             elif 'secrets' in st.secrets and 'GEMINI_API_KEY' in st.secrets['secrets']:
-                api_key = st.secrets['secrets']['GEMINI_API_KEY']
+                api_key = st.secrets['secrets']['WATSONX_API_KEY']
         except Exception as e1:
             pass
             
         # Method 2: Try environment variable
         if not api_key:
             try:
-                api_key = os.getenv("GEMINI_API_KEY", "")
+                api_key = os.getenv("WATSONX_API_KEY", "")
             except Exception as e2:
                 pass
         
         if not api_key:
-            raise ValueError("GEMINI_API_KEY is required. Please check your Streamlit secrets configuration.")
+            raise ValueError("WATSONX_API_KEY is required. Please check your Streamlit secrets configuration.")
         
         self.client = genai.Client(api_key=api_key)
         self.model_name = "gemini-2.5-flash"
